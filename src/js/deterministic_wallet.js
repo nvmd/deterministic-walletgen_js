@@ -64,7 +64,12 @@ var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
   };
 
   this.mnemonic = function (language) {
-    return mn_encode(seed, language);
+    try {
+      // NOTE: throws an exception in case the seed can't be word encoded
+      return mn_encode(seed, language);
+    } catch (e) {
+      return "";
+    }
   };
 
   return this;
