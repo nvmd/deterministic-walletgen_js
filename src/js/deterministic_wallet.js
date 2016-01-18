@@ -1,8 +1,8 @@
 var DeterministicWallet = function (_config) {
 
   this.generate = function (ccs) {
-    var seedSource = { type: 'passphrase'
-                     , string: cnUtil.rand_32()
+    var seedSource = { type:   'passphrase'
+                     , string: mn_random(256) // 256 bits of randomness
                      };
     return DeterministicWalletEngine(_config, seedSource, ccs);
   };
