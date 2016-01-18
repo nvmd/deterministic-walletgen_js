@@ -419,4 +419,4 @@ var cnUtil = (function(initConfig) {
     }
 
     return this;
-})(config);
+});
