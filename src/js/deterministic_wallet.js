@@ -1,3 +1,25 @@
+var CryptoNoteFamily = function (ccConfig) {
+
+  this.create_address = function (seed) {
+    var tools = cnUtil({ coinUnitPlaces: ccConfig.units
+                       , addressPrefix:  ccConfig.addressPrefix
+                       });
+    return tools.create_address(tools.sc_reduce32(seed));
+  };
+
+  return this;
+};
+
+var BitcoinFamily = function (ccConfig) {
+
+  this.create_address = function (seed) {
+    return null;
+  };
+
+  return this;
+};
+
+
 var DeterministicWallet = function (_config) {
 
   this.generate = function (ccs) {
@@ -14,12 +36,18 @@ var DeterministicWallet = function (_config) {
   return this;
 }({ salt: "de1ea11e112394834"
   , iter: 10000
+  , families: { 'cryptonote': CryptoNoteFamily  // cryptonote, mymonero compatible
+              , 'bitcoin':    BitcoinFamily
+              }
+  // , kdf: function(key, salt, iter) {
+  //          // ...
+  //          return hex;
+  //        }
   });
-
 
 var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
 
-  function kdf(key, salt, iter) {
+  function poor_mans_kdf(key, salt, iter) {
     var str = key + salt;
     // poor_mans_kdf
     var hex = cnBase58.bintohex(cnBase58.strtobin(str));
@@ -32,8 +60,9 @@ var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
   function generate_with_seed(cc, seed) {
     var keys;
 
-    if (cc.family == 'cryptonote') {
-      keys = cnUtil.create_address(cnUtil.sc_reduce32(seed));
+    var ccFamily = currencyFamilies[cc.family];
+    if (ccFamily != undefined) {
+      keys = ccFamily(cc.params).create_address(seed);
     }
 
     return { ticker: cc.ticker
@@ -47,11 +76,21 @@ var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
     } else if (source.type == 'mnemonic') {
       return mn_decode(source.string, source.language);
     }
-  }
+  };
+
+  function extract_kdf(config) {
+    if (config.kdf == undefined) {
+      return poor_mans_kdf;
+    } else {
+      return config.kdf;
+    }
+  };
 
   var seed = extract_seed(_seedSource);
+  var kdf  = extract_kdf(_config);
   var key  = kdf(seed, _config.salt, _config.iter);
-  var currencies = _ccs;
+  var currencies       = _ccs;
+  var currencyFamilies = _config.families;
   var accounts = currencies.map(function (cc) {
     return generate_with_seed(cc, key);
   });
