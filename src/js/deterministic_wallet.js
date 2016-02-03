@@ -19,12 +19,35 @@ var BitcoinFamily = function (ccConfig) {
   return this;
 };
 
+var DeterministicWalletPM10k = DeterministicWallet({
+    salt: "de1ea11e112394834"
+  , iter: 10000
+  , families: { 'cryptonote': CryptoNoteFamily  // cryptonote, mymonero compatible
+              , 'bitcoin':    BitcoinFamily
+              }
+  // , kdf: function(key, salt, iter) {
+  //     // ...
+  //     return hex;
+  //   }
+  // , entropy: function(bits) {
+  //     // ...
+  //     return hex;
+  //   }
+  });
 
 var DeterministicWallet = function (_config) {
 
+  function entropy_source (config) {
+    if (config.entropy == undefined) {
+      return mn_random;
+    } else {
+      return config.entropy;
+    }
+  };
+
   this.generate = function (ccs) {
     var seedSource = { type:   'passphrase'
-                     , string: mn_random(256) // 256 bits of randomness
+                     , string: entropy_source(_config)(256) // 256 bits of randomness
                      };
     return DeterministicWalletEngine(_config, seedSource, ccs);
   };
@@ -34,16 +57,7 @@ var DeterministicWallet = function (_config) {
   };
 
   return this;
-}({ salt: "de1ea11e112394834"
-  , iter: 10000
-  , families: { 'cryptonote': CryptoNoteFamily  // cryptonote, mymonero compatible
-              , 'bitcoin':    BitcoinFamily
-              }
-  // , kdf: function(key, salt, iter) {
-  //          // ...
-  //          return hex;
-  //        }
-  });
+};
 
 var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
 
