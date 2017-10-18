@@ -19,23 +19,6 @@ var BitcoinFamily = function (ccConfig) {
   return this;
 };
 
-var DeterministicWalletPM10k = DeterministicWallet({
-    salt: "de1ea11e112394834"
-  , iter: 10000
-  , families: { 'cryptonote': CryptoNoteFamily  // cryptonote, mymonero compatible
-              , 'bitcoin':    BitcoinFamily
-              }
-  // KDF and Entropy source can also be set here,
-  // otherwise, defaults will be used
-  // , kdf: function(key, salt, iter) {
-  //     // ...
-  //     return hex;
-  //   }
-  // , entropy: function(numberOfBits) {
-  //     // ...
-  //     return hex;
-  //   }
-  });
 
 var DeterministicWallet = function (_config) {
 
@@ -46,6 +29,9 @@ var DeterministicWallet = function (_config) {
       return config.entropy;
     }
   };
+
+
+  // Public API
 
   this.generate = function (ccs) {
     var seedSource = { type:   'passphrase'
@@ -133,3 +119,21 @@ var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
 
   return this;
 };
+
+var DeterministicWalletPM10k = DeterministicWallet({
+    salt: "de1ea11e112394834"
+  , iter: 10000
+  , families: { 'cryptonote': CryptoNoteFamily  // cryptonote, mymonero compatible
+              , 'bitcoin':    BitcoinFamily
+              }
+  // KDF and Entropy source can also be set here,
+  // otherwise, defaults will be used
+  // , kdf: function(key, salt, iter) {
+  //     // ...
+  //     return hex;
+  //   }
+  // , entropy: function(numberOfBits) {
+  //     // ...
+  //     return hex;
+  //   }
+  });
