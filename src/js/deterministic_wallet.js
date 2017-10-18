@@ -25,11 +25,13 @@ var DeterministicWalletPM10k = DeterministicWallet({
   , families: { 'cryptonote': CryptoNoteFamily  // cryptonote, mymonero compatible
               , 'bitcoin':    BitcoinFamily
               }
+  // KDF and Entropy source can also be set here,
+  // otherwise, defaults will be used
   // , kdf: function(key, salt, iter) {
   //     // ...
   //     return hex;
   //   }
-  // , entropy: function(bits) {
+  // , entropy: function(numberOfBits) {
   //     // ...
   //     return hex;
   //   }
@@ -100,6 +102,7 @@ var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
     }
   };
 
+  // setup engine's state
   var seed = extract_seed(_seedSource);
   var kdf  = extract_kdf(_config);
   var key  = kdf(seed, _config.salt, _config.iter);
@@ -108,7 +111,10 @@ var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
   var accounts = currencies.map(function (cc) {
     return generate_with_seed(cc, key);
   });
+  // end setup
 
+
+  // Public API
 
   this.accounts = accounts;
 
