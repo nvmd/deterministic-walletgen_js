@@ -123,7 +123,7 @@ var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
 var DeterministicWalletPM10k = DeterministicWallet({
     salt: "de1ea11e112394834"
   , iter: 10000
-  , families: { 'cryptonote': CryptoNoteFamily  // cryptonote, mymonero compatible
+  , families: { 'cryptonote': CryptoNoteFamily
               , 'bitcoin':    BitcoinFamily
               }
   // KDF and Entropy source can also be set here,
