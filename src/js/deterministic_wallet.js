@@ -113,7 +113,7 @@ var DeterministicWalletEngine = function (_config, _seedSource, _ccs) {
       // NOTE: throws an exception in case the seed can't be word encoded
       return mn_encode(seed, language);
     } catch (e) {
-      return "";
+      return "<i><b>Error: Not representable as mnemonic</b></i>";
     }
   };
 
