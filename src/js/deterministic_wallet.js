@@ -137,3 +137,20 @@ var DeterministicWalletPM10k = DeterministicWallet({
   //     return hex;
   //   }
   });
+
+var moneroCurrency = { ticker: 'xmr'
+                     , name: 'monero'
+                     , family: 'cryptonote'
+                     , uriPrefix: 'monero:'
+                     , params: { units: 12
+                               , addressPrefix: 18
+                               }
+                     };
+var digitalNoteCurrency = { ticker: 'xdn'
+                          , name: 'digitalnote'
+                          , family: 'cryptonote'
+                          , uriPrefix: 'digitalnote:'
+                          , params: { units: 8
+                                    , addressPrefix: 219  // 0xDB
+                                    }
+                          };
