@@ -1,0 +1,34 @@
+{
+  "name": "u-walletgen",
+  "version": "0.0.1",
+  "description": "Deterministic universal paper wallet generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "for f in tests/*; do echo \"$f\"; node \"$f\"; done; exit 0",
+    "build-debug": "browserify index.js -d --s walletgen > dist/walletgen.js",
+    "build-min": "browserify index.js --s walletgen | uglifyjs -c > dist/walletgen.min.js",
+    "build": "npm run build-debug && npm run build-min",
+    "watch": "watchify index.js -d --s pizza -o dist/pizza.js -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nvmd/deterministic-walletgen_js.git"
+  },
+  "keywords": [
+    "cryptocurrency",
+    "monero",
+    "cryptonote",
+    "bitcoin"
+  ],
+  "author": "Sergey Kazenyuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nvmd/deterministic-walletgen_js/issues"
+  },
+  "homepage": "https://github.com/nvmd/deterministic-walletgen_js#readme",
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "uglify-js": "^3.1.4",
+    "watchify": "^3.9.0"
+  }
+}

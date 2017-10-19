@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>walletgen</title>
+  <meta charset="utf-8">
+</head>
+
+<body>
+
+<script src="dist/walletgen.js"></script>
+<script type="text/javascript">
+  console.log('Running DW');
+
+  var currencies = [ walletgen.moneroCurrency ];
+  var dw = DeterministicWalletPM10k.generate(currencies);
+  keys     = dw.accounts[0].keys;
+  mnemonic = dw.mnemonic(lang);
+  passphrase = dw.passphrase();
+
+  document.write(keys);
+  document.write(mnemonic);
+  document.write(passphrase);
+</script>
+
+</body>
+</html>
