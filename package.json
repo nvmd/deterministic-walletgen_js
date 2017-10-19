@@ -8,7 +8,7 @@
     "build-debug": "browserify index.js -d --s walletgen > dist/walletgen.js",
     "build-min": "browserify index.js --s walletgen | uglifyjs -c > dist/walletgen.min.js",
     "build": "npm run build-debug && npm run build-min",
-    "watch": "watchify index.js -d --s pizza -o dist/pizza.js -v"
+    "watch": "watchify index.js -d --s walletgen -o dist/walletgen.js -v"
   },
   "repository": {
     "type": "git",
