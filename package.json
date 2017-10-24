@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "for f in tests/*; do echo \"$f\"; node \"$f\"; done; exit 0",
-    "build-debug": "browserify index.js -d --s walletgen > dist/walletgen.js",
-    "build-min": "browserify index.js --s walletgen | uglifyjs -c > dist/walletgen.min.js",
+    "build-debug": "mkdir -p dist; browserify index.js -d --s walletgen > dist/walletgen.js",
+    "build-min": "mkdir -p dist; browserify index.js --s walletgen | uglifyjs -c > dist/walletgen.min.js",
     "build": "npm run build-debug && npm run build-min",
     "watch": "watchify index.js -d --s walletgen -o dist/walletgen.js -v"
   },
